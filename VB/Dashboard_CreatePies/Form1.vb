@@ -1,47 +1,40 @@
-﻿Imports System
+﻿Imports DevExpress.DashboardCommon
+Imports System
 Imports System.Windows.Forms
-Imports DevExpress.DashboardCommon
-Imports DevExpress.DataAccess
 
 Namespace Dashboard_CreatePies
-    Partial Public Class Form1
-        Inherits Form
+	Partial Public Class Form1
+		Inherits Form
 
-        Public Sub New()
-            InitializeComponent()
-        End Sub
-        Private Function CreatePies(ByVal dataSource As DashboardObjectDataSource) As PieDashboardItem
+		Public Sub New()
+			InitializeComponent()
+		End Sub
+		Private Function CreatePies(ByVal dataSource As IDashboardDataSource) As PieDashboardItem
+			Dim pies As New PieDashboardItem()
+			pies.DataSource = dataSource
+			pies.Values.Add(New Measure("Extended Price"))
+			pies.Arguments.Add(New Dimension("Country"))
+			pies.SeriesDimensions.Add(New Dimension("OrderDate"))
+			Return pies
+		End Function
+		Private Sub Form1_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+            Dim excelDataSource As New DashboardExcelDataSource()
+            excelDataSource.FileName = "SalesPerson.xlsx"
+            Dim options As New DevExpress.DataAccess.Excel.ExcelSourceOptions()
+            Dim importSettings = New DevExpress.DataAccess.Excel.ExcelWorksheetSettings()
+            importSettings.WorksheetName = "Data"
+            importSettings.CellRange = "A1:L100"
+            options.ImportSettings = importSettings
+            excelDataSource.SourceOptions = options
+            excelDataSource.Fill()
 
-            ' Creates a pie dashboard item and specifies its data source.
-            Dim pies As New PieDashboardItem()
-            pies.DataSource = dataSource
+            Dim dashBoard As New Dashboard()
+			dashBoard.DataSources.Add(excelDataSource)
+			Dim pies As PieDashboardItem = CreatePies(excelDataSource)
+			dashBoard.Items.Add(pies)
 
-            ' Specifies a measure that provides data used to calculate pie values.
-            pies.Values.Add(New Measure("Extended Price"))
-            ' Specifies a dimension that provides data for arguments in a pie.
-            pies.Arguments.Add(New Dimension("Country"))
-            ' Specifies a dimension that provides data for pie series.
-            pies.SeriesDimensions.Add(New Dimension("OrderDate"))
-
-            Return pies
-        End Function
-        Private Sub Form1_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
-
-            ' Creates a dashboard and sets it as the currently opened dashboard in the dashboard viewer.
-            dashboardViewer1.Dashboard = New Dashboard()
-
-            ' Creates a data source and adds it to the dashboard data source collection.
-            Dim dataSource As New DashboardObjectDataSource()
-            dataSource.DataSource = (New nwindDataSetTableAdapters.SalesPersonTableAdapter()).GetData()
-            dashboardViewer1.Dashboard.DataSources.Add(dataSource)
-
-            ' Creates a pie dashboard item with the specified data source 
-            ' and adds it to the Items collection to display within the dashboard.
-            Dim pies As PieDashboardItem = CreatePies(dataSource)
-            dashboardViewer1.Dashboard.Items.Add(pies)
-
-            ' Reloads data in the data sources.
-            dashboardViewer1.ReloadData()
-        End Sub
-    End Class
+			dashboardViewer1.Dashboard = dashBoard
+			dashboardViewer1.ReloadData()
+		End Sub
+	End Class
 End Namespace
