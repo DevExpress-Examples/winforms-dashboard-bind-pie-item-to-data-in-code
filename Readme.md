@@ -37,7 +37,7 @@ This example demonstrates how to bind a [Pie dashboard item](https://docs.devex
 * [Dashboard for WinForms - Bind a Pie Map dashboard item to data in code](https://github.com/DevExpress-Examples/how-to-bind-a-pie-map-dashboard-item-to-data-in-code-t119627)
 * [Dashboard for WinForms - Bind a Chart dashboard item to data in code](https://github.com/DevExpress-Examples/how-to-bind-a-chart-dashboard-item-to-data-in-code-e4767)
 <!-- feedback -->
-## Does this example address your development requirements/objectives?
+## Does This Example Address Your Development Requirements/Objectives?
 
 [<img src="https://www.devexpress.com/support/examples/i/yes-button.svg"/>](https://www.devexpress.com/support/examples/survey.xml?utm_source=github&utm_campaign=winforms-dashboard-bind-pie-item-to-data-in-code&~~~was_helpful=yes) [<img src="https://www.devexpress.com/support/examples/i/no-button.svg"/>](https://www.devexpress.com/support/examples/survey.xml?utm_source=github&utm_campaign=winforms-dashboard-bind-pie-item-to-data-in-code&~~~was_helpful=no)
 
